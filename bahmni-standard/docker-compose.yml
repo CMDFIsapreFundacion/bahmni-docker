@@ -19,7 +19,7 @@ x-log-config: &log-config
 services:
 
   proxy:
-    image: 'bahmni/proxy:${PROXY_IMAGE_TAG:?}'
+    image: 'juanjortega/proxy:${PROXY_IMAGE_TAG:?}'
     #volumes:
       # - ${CERTIFICATE_PATH}:/etc/tls
     ports:
@@ -29,7 +29,7 @@ services:
     restart: ${RESTART_POLICY}
 
   bahmni-config:
-    image: 'bahmni/default-config:${CONFIG_IMAGE_TAG:?}'
+    image: 'juanjortega/default-config:${CONFIG_IMAGE_TAG:?}'
     volumes:
       - '${CONFIG_VOLUME:?}:/usr/local/bahmni_config'
     logging: *log-config
@@ -266,7 +266,7 @@ services:
      - 'bahmni-clinical-forms:/home/bahmni/clinical_forms'
 
   bahmni-web:
-    image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
+    image: juanjortega/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
     profiles: ["emr","bahmni-standard","bahmni-mart"]
     volumes:
       - "${CONFIG_VOLUME:?}:/usr/local/apache2/htdocs/bahmni_config/:ro"
