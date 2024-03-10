@@ -198,8 +198,7 @@ services:
       MYSQL_PASSWORD_NOTIFICACIONES: ${MYSQL_PASSWORD_NOTIFICACIONES:?}
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
-      - ./initdb.d:/docker-entrypoint-initdb.d
-      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+      - './bahmni-docker/bahmni-standard/initdb.d:/docker-entrypoint-initdb.d'
 
     logging: *log-config
 
