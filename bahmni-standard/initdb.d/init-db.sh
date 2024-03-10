@@ -2,7 +2,14 @@
 
 # Esperar a que MySQL esté listo
 echo "Esperando a MySQL..."
-while ! mysqladmin -h"${OPENMMRS_MYSQL_HOST}" -u root -p"${MYSQL_ROOT_PASSWORD}" --silent ping; do
+#while ! mysqladmin -h"${OPENMMRS_MYSQL_HOST}" -u root -p"${MYSQL_ROOT_PASSWORD}" --silent ping; do
+ #   sleep 1
+#done
+#echo "MySQL listo."
+
+# Esperar a que MySQL esté listo
+echo "Esperando a MySQL..."
+while ! mysqladmin --silent ping; do
     sleep 1
 done
 echo "MySQL listo."
