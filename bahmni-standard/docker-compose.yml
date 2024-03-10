@@ -199,7 +199,9 @@ services:
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
       - './bahmni-docker/bahmni-standard/initdb.d:/docker-entrypoint-initdb.d'
-
+    ports:
+      - "3307:3306"
+      
     logging: *log-config
 
   metabasedb:
