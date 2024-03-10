@@ -266,7 +266,7 @@ services:
      - 'bahmni-clinical-forms:/home/bahmni/clinical_forms'
 
   bahmni-web:
-    image: juanjortega/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
+    image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
     profiles: ["emr","bahmni-standard","bahmni-mart"]
     volumes:
       - "${CONFIG_VOLUME:?}:/usr/local/apache2/htdocs/bahmni_config/:ro"
