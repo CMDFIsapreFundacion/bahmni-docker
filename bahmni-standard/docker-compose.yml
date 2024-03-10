@@ -74,7 +74,7 @@ services:
 
   odoo:
     profiles: ["odoo","bahmni-standard"]
-    image: 'bahmni/odoo-16:${ODOO_IMAGE_TAG:?[ERROR]}'
+    image: 'bahmni/odoo-10:${ODOO_IMAGE_TAG:?[ERROR]}'
     ports:
       - '8069:8069'
     volumes:
@@ -195,6 +195,7 @@ services:
       MYSQL_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
+      - ./initdb.d:/docker-entrypoint-initdb.d
     logging: *log-config
 
   metabasedb:
@@ -467,6 +468,37 @@ services:
         - 'bahmni-uploaded-files:/mounts/bahmni-uploaded-files'
         - 'dcm4chee-archive:/mounts/dcm4chee-archive'
         - 'configuration_checksums:/mounts/configuration_checksums'
+
+  gesfrontend:
+    image: 'juanjortega/bahmni_gn_frontend:latest'
+    profiles: ["emr","bahmni-standard", "metabase", "bahmni-mart"]
+    hostname: gesfrontend  
+    ports:
+      - "8092:8092"
+    restart: "always"
+
+      
+  gesbackend:
+    image: 'juanjortega/bahmni_gn_backend:latest'
+    profiles: ["emr","bahmni-standard", "metabase", "bahmni-mart"]
+    hostname: gesbackend  
+    ports:
+      - "8093:8093"
+    restart: "always"
+    
+
+  apidaemon:
+    image: 'juanjortega/bahmni_notificacionges:latest'
+    profiles: ["emr","bahmni-standard", "metabase", "bahmni-mart"]
+    environment:
+      MYSQL_HOST=${openmrshost_var} 
+      MYSQL_DATABASE=${openmrsbd_var} 
+      NOTIFICACIONES_DATABASE=${notificacionesbd_var} 
+      MYSQL_USER=${user_var} 
+      MYSQL_PASSWORD=${password_var} 
+      INTERVALO_SEG=${intervalo_seg}
+      CONCEPT_UUID_VAR=${concept_uuid_var}
+    restart: "always"
 
 volumes:
   openelisdbdata:
