@@ -11,6 +11,10 @@ echo "MySQL listo."
 mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -h "${MYSQL_HOST}" <<-EOSQL
     CREATE DATABASE IF NOT EXISTS \`${NOTIFICACIONES_DATABASE}\`;
     CREATE USER IF NOT EXISTS '${MYSQL_USER_NOTIFICACIONES}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD_NOTIFICACIONES}';
+        -- Otorgar todos los privilegios en la base de datos de notificaciones
     GRANT ALL PRIVILEGES ON \`${NOTIFICACIONES_DATABASE}\`.* TO '${MYSQL_USER_NOTIFICACIONES}'@'%';
+        -- Otorgar privilegios de lectura en openmsdb
+    GRANT SELECT ON \`${openmsdb}\`.* TO '${MYSQL_USER_NOTIFICACIONES}'@'%';
+
     FLUSH PRIVILEGES;
 EOSQL
