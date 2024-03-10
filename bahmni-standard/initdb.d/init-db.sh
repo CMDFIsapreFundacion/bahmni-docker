@@ -25,3 +25,6 @@ mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -h "${OPENMMRS_MYSQL_HOST}" <<-EOSQL
 
     FLUSH PRIVILEGES;
 EOSQL
+
+#crear la tabla.
+mysql ${NOTIFICACIONES_DATABASE} < "$(dirname "$0")/create_table_notificacion_ges.sql"
