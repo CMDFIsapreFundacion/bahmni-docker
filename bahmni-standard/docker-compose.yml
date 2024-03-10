@@ -198,10 +198,10 @@ services:
       MYSQL_PASSWORD_NOTIFICACIONES: ${MYSQL_PASSWORD_NOTIFICACIONES:?}
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
-      - './bahmni-docker/bahmni-standard/initdb.d:/docker-entrypoint-initdb.d'
+      - './initdb.d:/docker-entrypoint-initdb.d'
     ports:
       - "3307:3306"
-      
+
     logging: *log-config
 
   metabasedb:
