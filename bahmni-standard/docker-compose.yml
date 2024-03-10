@@ -193,9 +193,14 @@ services:
       MYSQL_DATABASE: ${OPENMRS_DB_NAME:?}
       MYSQL_USER: ${OPENMRS_DB_USERNAME:?}
       MYSQL_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
+      NOTIFICACIONES_DATABASE: ${notificacionesbd_var}
+      MYSQL_USER_NOTIFICACIONES: ${user_var}
+      MYSQL_PASSWORD_NOTIFICACIONES: ${password_var}
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
       - ./initdb.d:/docker-entrypoint-initdb.d
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+
     logging: *log-config
 
   metabasedb:
@@ -486,18 +491,17 @@ services:
       - "8093:8093"
     restart: "always"
     
-
   apidaemon:
     image: 'juanjortega/bahmni_notificacionges:latest'
     profiles: ["emr","bahmni-standard", "metabase", "bahmni-mart"]
     environment:
-      MYSQL_HOST=${openmrshost_var} 
-      MYSQL_DATABASE=${openmrsbd_var} 
-      NOTIFICACIONES_DATABASE=${notificacionesbd_var} 
-      MYSQL_USER=${user_var} 
-      MYSQL_PASSWORD=${password_var} 
-      INTERVALO_SEG=${intervalo_seg}
-      CONCEPT_UUID_VAR=${concept_uuid_var}
+      MYSQL_HOST: ${openmrshost_var}
+      MYSQL_DATABASE: ${openmrsbd_var} 
+      NOTIFICACIONES_DATABASE: ${notificacionesbd_var}
+      MYSQL_USER_NOTIFICACIONES: ${user_var}
+      MYSQL_PASSWORD_NOTIFICACIONES: ${password_var}
+      INTERVALO_SEG: ${intervalo_seg}
+      CONCEPT_UUID_VAR: ${concept_uuid_var}
     restart: "always"
 
 volumes:
