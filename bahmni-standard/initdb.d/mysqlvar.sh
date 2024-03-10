@@ -3,10 +3,10 @@
 # Genera my.cnf usando variables de entorno
 cat << EOF > /etc/mysql/my.cnf
 [client]
-user=${MYSQL_USER}
-password=${MYSQL_PASSWORD}
+user=root
+password=${MYSQL_ROOT_PASSWORD}
 host=localhost
 EOF
 
-# Luego inicia MySQL
+# Luego inicia MySQL u otro proceso principal si es necesario
 exec "$@"
