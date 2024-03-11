@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Esperar a que MySQL esté listo
-echo "Esperando a MySQL..."
+#echo "Esperando a MySQL..."
 #while ! mysqladmin -h"${OPENMMRS_MYSQL_HOST}" -u root -p"${MYSQL_ROOT_PASSWORD}" --silent ping; do
  #   sleep 1
 #done
@@ -13,6 +13,18 @@ while ! mysqladmin --silent ping; do
     sleep 1
 done
 echo "MySQL listo."
+
+# Genera my.cnf usando variables de entorno
+cat << EOF > /etc/mysql/my.cnf
+[client]
+user=root
+password=${MYSQL_ROOT_PASSWORD}
+host=localhost
+EOF
+
+# Luego inicia MySQL u otro proceso principal si es necesario
+exec "$@"
+
 
 # Conectarse a MySQL y ejecutar comandos SQL
 mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -h "${OPENMMRS_MYSQL_HOST}" <<-EOSQL
@@ -27,4 +39,5 @@ mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -h "${OPENMMRS_MYSQL_HOST}" <<-EOSQL
 EOSQL
 
 #crear la tabla.
-mysql ${NOTIFICACIONES_DATABASE} < "$(dirname "$0")/create_table_notificacion_ges.sql"
+mysql ${NOTIFICACIONES_DATABASE} < "/notificacionsql/create_table_notificacion_ges.sql"
+
