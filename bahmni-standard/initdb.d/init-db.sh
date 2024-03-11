@@ -15,13 +15,10 @@ done
 echo "MySQL listo."
 
 #crear directorio /notificacionmy
-mkdir /notificacionmy
-
-#cambiar permisos de usuario al usuario actual de /notificacionmy
-chown -R $(whoami):$(whoami) /notificacionmy
+sudo mkdir /notificacionmy
 
 # Genera my.cnf usando variables de entorno
-cat << EOF > /notificacionsql/my.cnf
+sudo cat << EOF > /notificacionmy/my.cnf
 [client]
 user=root
 password=${MYSQL_ROOT_PASSWORD}
