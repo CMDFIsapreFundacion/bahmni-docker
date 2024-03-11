@@ -1,19 +1,11 @@
 #!/bin/bash
 
 # Esperar a que MySQL esté listo
-#echo "Esperando a MySQL..."
-#while ! mysqladmin -h"${OPENMMRS_MYSQL_HOST}" -u root -p"${MYSQL_ROOT_PASSWORD}" --silent ping; do
- #   sleep 1
-#done
-#echo "MySQL listo."
-
-# Esperar a que MySQL esté listo
 echo "Esperando a MySQL..."
 while ! mysqladmin --silent ping; do
     sleep 1
 done
 echo "MySQL listo."
-
 
 # Luego inicia MySQL u otro proceso principal si es necesario
 exec "$@"
@@ -26,7 +18,6 @@ if [ "$USER_EXISTS" -eq 0 ]; then
     EOSQL
 fi
 
-
 mysql --defaults-extra-file=/notificacionsql/my.cnf <<-EOSQL
     CREATE DATABASE IF NOT EXISTS \`${NOTIFICACIONES_DATABASE}\`;
     GRANT ALL PRIVILEGES ON \`${NOTIFICACIONES_DATABASE}\`.* TO '${MYSQL_USER_NOTIFICACIONES}'@'%';
@@ -35,8 +26,7 @@ mysql --defaults-extra-file=/notificacionsql/my.cnf <<-EOSQL
 EOSQL
 
 #crear la tabla.
-#mysql ${NOTIFICACIONES_DATABASE} < "/notificacionsql/create_table_notificacion_ges.sql"
 mysql --defaults-extra-file=/notificacionsql/my.cnf ${NOTIFICACIONES_DATABASE} < "./notificacionsql/create_table_notificacion_ges.sql"
 
 #borrar el archivo /notificacionsql/my.cnf
-rm /notificacionmy/my.cnf
+#rm /notificacionmy/my.cnf
