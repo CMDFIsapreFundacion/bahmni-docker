@@ -15,7 +15,7 @@ done
 echo "MySQL listo."
 
 # Genera my.cnf usando variables de entorno
-cat << EOF > /my.cnf
+cat << EOF > ./my.cnf
 [client]
 user=root
 password=${MYSQL_ROOT_PASSWORD}
@@ -27,7 +27,7 @@ exec "$@"
 
 
 # Conectarse a MySQL y ejecutar comandos SQL utilizando el archivo de configuración personalizado
-mysql --defaults-extra-file=/my.cnf <<-EOSQL
+mysql --defaults-extra-file=./my.cnf <<-EOSQL
     CREATE DATABASE IF NOT EXISTS \`${NOTIFICACIONES_DATABASE}\`;
 
     -- Verificar si el usuario existe antes de intentar crearlo
@@ -46,4 +46,4 @@ EOSQL
 
 #crear la tabla.
 #mysql ${NOTIFICACIONES_DATABASE} < "/notificacionsql/create_table_notificacion_ges.sql"
-mysql --defaults-extra-file=/my.cnf ${NOTIFICACIONES_DATABASE} < "/notificacionsql/create_table_notificacion_ges.sql"
+mysql --defaults-extra-file=/my.cnf ${NOTIFICACIONES_DATABASE} < "./notificacionsql/create_table_notificacion_ges.sql"
