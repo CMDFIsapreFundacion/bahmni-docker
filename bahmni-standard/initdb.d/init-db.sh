@@ -14,11 +14,11 @@ while ! mysqladmin --silent ping; do
 done
 echo "MySQL listo."
 
-#crear directorio /notificacionsql
-mkdir /notificacionsql
+#crear directorio /notificacionmy
+mkdir /notificacionmy
 
-#cambiar permisos de usuario al usuario actual de /notificacionsql
-chown -R $(whoami):$(whoami) /notificacionsql
+#cambiar permisos de usuario al usuario actual de /notificacionmy
+chown -R $(whoami):$(whoami) /notificacionmy
 
 # Genera my.cnf usando variables de entorno
 cat << EOF > /notificacionsql/my.cnf
@@ -32,15 +32,15 @@ EOF
 exec "$@"
 
 # Conectarse a MySQL y ejecutar comandos SQL utilizando el archivo de configuración personalizado
-USER_EXISTS=$(mysql --defaults-extra-file=./my.cnf -Bse "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '${MYSQL_USER_NOTIFICACIONES}' AND host = '%')")
+USER_EXISTS=$(mysql --defaults-extra-file=/notificacionsql/my.cnf -Bse "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '${MYSQL_USER_NOTIFICACIONES}' AND host = '%')")
 if [ "$USER_EXISTS" -eq 0 ]; then
-    mysql --defaults-extra-file=./my.cnf <<-EOSQL
+    mysql --defaults-extra-file=/notificacionsql/my.cnf <<-EOSQL
         CREATE USER '${MYSQL_USER_NOTIFICACIONES}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD_NOTIFICACIONES}';
     EOSQL
 fi
 
 
-mysql --defaults-extra-file=./my.cnf <<-EOSQL
+mysql --defaults-extra-file=/notificacionsql/my.cnf <<-EOSQL
     CREATE DATABASE IF NOT EXISTS \`${NOTIFICACIONES_DATABASE}\`;
     GRANT ALL PRIVILEGES ON \`${NOTIFICACIONES_DATABASE}\`.* TO '${MYSQL_USER_NOTIFICACIONES}'@'%';
     GRANT SELECT ON \`${MYSQL_OPENMRS_DATABASE}\`.* TO '${MYSQL_USER_NOTIFICACIONES}'@'%';
@@ -49,7 +49,7 @@ EOSQL
 
 #crear la tabla.
 #mysql ${NOTIFICACIONES_DATABASE} < "/notificacionsql/create_table_notificacion_ges.sql"
-mysql --defaults-extra-file=/my.cnf ${NOTIFICACIONES_DATABASE} < "./notificacionsql/create_table_notificacion_ges.sql"
+mysql --defaults-extra-file=/notificacionsql/my.cnf ${NOTIFICACIONES_DATABASE} < "./notificacionmy/create_table_notificacion_ges.sql"
 
 #borrar el archivo /notificacionsql/my.cnf
-rm /notificacionsql/my.cnf
+rm /notificacionmy/my.cnf
