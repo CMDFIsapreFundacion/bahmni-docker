@@ -25,20 +25,17 @@ EOF
 # Luego inicia MySQL u otro proceso principal si es necesario
 exec "$@"
 
-
 # Conectarse a MySQL y ejecutar comandos SQL utilizando el archivo de configuración personalizado
+USER_EXISTS=$(mysql --defaults-extra-file=./my.cnf -Bse "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '${MYSQL_USER_NOTIFICACIONES}' AND host = '%')")
+if [ "$USER_EXISTS" -eq 0 ]; then
+    mysql --defaults-extra-file=./my.cnf <<-EOSQL
+        CREATE USER '${MYSQL_USER_NOTIFICACIONES}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD_NOTIFICACIONES}';
+    EOSQL
+fi
+
+
 mysql --defaults-extra-file=./my.cnf <<-EOSQL
     CREATE DATABASE IF NOT EXISTS \`${NOTIFICACIONES_DATABASE}\`;
-
-    -- Verificar si el usuario existe antes de intentar crearlo
-    DELIMITER $$
-    BEGIN
-        IF NOT EXISTS (SELECT 1 FROM mysql.user WHERE user = '${MYSQL_USER_NOTIFICACIONES}' AND host = '%') THEN
-            CREATE USER '${MYSQL_USER_NOTIFICACIONES}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD_NOTIFICACIONES}';
-        END IF;
-    END$$
-    DELIMITER ;
-
     GRANT ALL PRIVILEGES ON \`${NOTIFICACIONES_DATABASE}\`.* TO '${MYSQL_USER_NOTIFICACIONES}'@'%';
     GRANT SELECT ON \`${MYSQL_OPENMRS_DATABASE}\`.* TO '${MYSQL_USER_NOTIFICACIONES}'@'%';
     FLUSH PRIVILEGES;
