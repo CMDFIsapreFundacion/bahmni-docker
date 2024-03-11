@@ -15,7 +15,7 @@ USER_EXISTS=$(mysql --defaults-extra-file=/notificacionsql/my.cnf -Bse "SELECT E
 if [ "$USER_EXISTS" -eq 0 ]; then
     mysql --defaults-extra-file=/notificacionsql/my.cnf <<-EOSQL
         CREATE USER '${MYSQL_USER_NOTIFICACIONES}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD_NOTIFICACIONES}';
-    EOSQL
+EOSQL
 fi
 
 mysql --defaults-extra-file=/notificacionsql/my.cnf <<-EOSQL
