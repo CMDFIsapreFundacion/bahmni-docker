@@ -200,6 +200,7 @@ services:
       - 'openmrsdbdata:/var/lib/mysql'
       - './initdb.d:/docker-entrypoint-initdb.d'
       - './create_table_notificacion_ges.sql:/notificacionsql/create_table_notificacion_ges.sql'
+      - './my.cnf:/notificacionsql/my.cnf'
     ports:
       - "3307:3306"
 

@@ -14,16 +14,6 @@ while ! mysqladmin --silent ping; do
 done
 echo "MySQL listo."
 
-#crear directorio /notificacionmy
-sudo mkdir /notificacionmy
-
-# Genera my.cnf usando variables de entorno
-sudo cat << EOF > /notificacionmy/my.cnf
-[client]
-user=root
-password=${MYSQL_ROOT_PASSWORD}
-host=localhost
-EOF
 
 # Luego inicia MySQL u otro proceso principal si es necesario
 exec "$@"
@@ -46,7 +36,7 @@ EOSQL
 
 #crear la tabla.
 #mysql ${NOTIFICACIONES_DATABASE} < "/notificacionsql/create_table_notificacion_ges.sql"
-mysql --defaults-extra-file=/notificacionsql/my.cnf ${NOTIFICACIONES_DATABASE} < "./notificacionmy/create_table_notificacion_ges.sql"
+mysql --defaults-extra-file=/notificacionsql/my.cnf ${NOTIFICACIONES_DATABASE} < "./notificacionsql/create_table_notificacion_ges.sql"
 
 #borrar el archivo /notificacionsql/my.cnf
 rm /notificacionmy/my.cnf
