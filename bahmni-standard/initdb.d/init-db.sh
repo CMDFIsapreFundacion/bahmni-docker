@@ -12,6 +12,13 @@ exec "$@"
 
 # Conectarse a MySQL y ejecutar comandos SQL utilizando el archivo de configuración personalizado
 USER_EXISTS=$(mysql --defaults-extra-file=/notificacionsql/my.cnf -Bse "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '${MYSQL_USER_NOTIFICACIONES}' AND host = '%')")
+
+# Verificar si USER_EXISTS es un número
+if ! [[ $USER_EXISTS =~ ^[0-9]+$ ]]; then
+    echo "Error: USER_EXISTS no es un número"
+    exit 1
+fi
+
 if [ "$USER_EXISTS" -eq 0 ]; then
     mysql --defaults-extra-file=/notificacionsql/my.cnf <<-EOSQL
         CREATE USER '${MYSQL_USER_NOTIFICACIONES}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD_NOTIFICACIONES}';
@@ -26,7 +33,7 @@ mysql --defaults-extra-file=/notificacionsql/my.cnf <<-EOSQL
 EOSQL
 
 #crear la tabla.
-mysql --defaults-extra-file=/notificacionsql/my.cnf ${NOTIFICACIONES_DATABASE} < "./notificacionsql/create_table_notificacion_ges.sql"
+mysql --defaults-extra-file=/notificacionsql/my.cnf ${NOTIFICACIONES_DATABASE} < "/notificacionsql/create_table_notificacion_ges.sql"
 
 #borrar el archivo /notificacionsql/my.cnf
 #rm /notificacionmy/my.cnf
