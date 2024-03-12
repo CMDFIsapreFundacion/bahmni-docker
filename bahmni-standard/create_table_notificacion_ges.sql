@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS notificacion;
+USE notificacion;
 create table notificacion_ges
 (
     id                          int auto_increment
