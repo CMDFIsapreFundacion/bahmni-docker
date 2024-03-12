@@ -8,7 +8,7 @@ done
 echo "MySQL listo."
 
 # Crear la base de datos y la tabla.
-mysql --defaults-extra-file=/notificacionsql/my.cnf < "/notificacionsql/create_database_and_table.sql"
+mysql --defaults-extra-file=/notificacionsql/my.cnf < "/notificacionsql/create_table_notificacion_ges.sql"
 
 # Luego inicia MySQL u otro proceso principal si es necesario
 exec "$@"
