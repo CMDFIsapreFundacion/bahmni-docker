@@ -13,9 +13,8 @@ mysql --defaults-extra-file=/notificacionsql/my.cnf < "/notificacionsql/create_t
 # Luego inicia MySQL u otro proceso principal si es necesario
 exec "$@"
 
-mysql --defaults-extra-file=/notificacionsql/my.cnf <<-EOSQL
-    CREATE USER '${MYSQL_USER_NOTIFICACIONES}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD_NOTIFICACIONES}';
-    CREATE DATABASE IF NOT EXISTS \`${NOTIFICACIONES_DATABASE}\`;
-    GRANT ALL PRIVILEGES ON \`${NOTIFICACIONES_DATABASE}\`.* TO '${MYSQL_USER_NOTIFICACIONES}'@'%';
-    FLUSH PRIVILEGES;
-EOSQL
+# Crear usuario y base de datos para notificaciones
+mysql --defaults-extra-file=/notificacionsql/my.cnf -e "CREATE USER '${MYSQL_USER_NOTIFICACIONES}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD_NOTIFICACIONES}';"
+mysql --defaults-extra-file=/notificacionsql/my.cnf -e "CREATE DATABASE IF NOT EXISTS \`${NOTIFICACIONES_DATABASE}\`;"
+mysql --defaults-extra-file=/notificacionsql/my.cnf -e "GRANT ALL PRIVILEGES ON \`${NOTIFICACIONES_DATABASE}\`.* TO '${MYSQL_USER_NOTIFICACIONES}'@'%';"
+mysql --defaults-extra-file=/notificacionsql/my.cnf -e "FLUSH PRIVILEGES;"
