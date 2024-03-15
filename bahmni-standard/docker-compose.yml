@@ -521,8 +521,7 @@ services:
     volumes:
       - 'notificacionesdbdata:/var/lib/mysql'
       - './initdb.d:/docker-entrypoint-initdb.d'
-      - './create_table_notificacion_ges.sql:/notificacionsql/create_table_notificacion_ges.sql'
-      - './my.cnf:/notificacionsql/my.cnf'
+      - './script:/script'
     ports:
       - "3308:3306"
 volumes:
