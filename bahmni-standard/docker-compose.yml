@@ -198,7 +198,8 @@ services:
       MYSQL_PASSWORD_NOTIFICACIONES: ${MYSQL_PASSWORD_NOTIFICACIONES:?}
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
-      - './initdb.d:/docker-entrypoint-initdb.d'
+      - './initdb.openmrs:/docker-entrypoint-initdb.d'
+
     ports:
       - "3307:3306"
 
@@ -520,7 +521,7 @@ services:
       MYSQL_PASSWORD_NOTIFICACIONES: ${MYSQL_PASSWORD_NOTIFICACIONES:?}
     volumes:
       - 'notificacionesdbdata:/var/lib/mysql'
-      - './initdb.d:/docker-entrypoint-initdb.d'
+      - './initdb.notificacion:/docker-entrypoint-initdb.d'
     ports:
       - "3308:3306"
 volumes:
