@@ -1,6 +1,10 @@
+
 CREATE DATABASE IF NOT EXISTS notificacion;
+CREATE USER 'notificacion'@'%' IDENTIFIED BY 'notificacion';
+GRANT ALL PRIVILEGES ON notificacion.* TO 'notificacion'@'%';
+FLUSH PRIVILEGES;
 USE notificacion;
-create table notificacion_ges
+CREATE TABLE IF NOT EXISTS notificacion.notificacion_ges
 (
     id                          int auto_increment
         primary key,
