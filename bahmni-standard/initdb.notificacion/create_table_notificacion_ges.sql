@@ -1,6 +1,6 @@
 
 CREATE DATABASE IF NOT EXISTS notificacion;
-CREATE USER 'notificacion'@'%' IDENTIFIED BY 'notificacion';
+CREATE USER 'notificacion'@'%' IDENTIFIED BY 'Admin.123';
 GRANT ALL PRIVILEGES ON notificacion.* TO 'notificacion'@'%';
 FLUSH PRIVILEGES;
 USE notificacion;
