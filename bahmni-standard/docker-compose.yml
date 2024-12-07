@@ -19,7 +19,7 @@ x-log-config: &log-config
 services:
 
   proxy:
-    image: 'juanjortega/proxy:${PROXY_IMAGE_TAG:?}'
+    image: 'juanjortega/proxy-cmdf:${PROXY_IMAGE_TAG:?}'
     #volumes:
       # - ${CERTIFICATE_PATH}:/etc/tls
     ports:
